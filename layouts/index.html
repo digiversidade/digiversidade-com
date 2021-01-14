@@ -14,7 +14,11 @@
     {{ end }}
     </ul>
     <ul>
-      {{ range (where site.RegularPages "Section" "blog") }}
+      {{ $pages := .Site.RegularPages }}
+      {{ range .Site.Home.Translations }}
+        {{ $pages = $pages | lang.Merge .Site.RegularPages }}
+      {{ end }}
+      {{ range (where $pages "Section" "blog") }}
       <li>
         <a href="{{ .RelPermalink }}">
           {{ .Title }}
