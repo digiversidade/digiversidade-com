@@ -1,7 +1,5 @@
 ---
 title: The Rabbit in the Fox Skin
-summary: We should not have any doubt anymore. The quick brown fox is actually a
-  *rabbit*. All that jumping happens for a reason.
 date: 2021-01-14T12:42:29.434Z
 ---
 # Is The Brown Fox a Rabbit?

@@ -15,6 +15,5 @@ collections:
       - { label: 'Title', name: 'title', widget: 'string' }
       - { label: 'Subtitle', name: 'subtitle', widget: 'string', required: false }
       - { label: 'Banner', name: 'banner', widget: 'image', required: false }
-      - { label: 'Summary', name: 'summary', widget: 'markdown' }
       - { label: 'Publish Date', name: 'date', widget: 'datetime' }
       - { label: 'Body', name: 'body', widget: 'markdown' }
