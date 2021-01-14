@@ -2,3 +2,15 @@ baseURL = "http://example.org/"
 languageCode = "en-us"
 title = "My New Hugo Site"
 enableEmoji = true
+
+DefaultContentLanguage = "en"
+
+[languages]
+  [languages.en]
+    title = "Digiversidade"
+    languageName = "English"
+    weight = 1
+  [languages.pt]
+    title = "Digiversidade"
+    languageName = "Português"
+    weight = 2

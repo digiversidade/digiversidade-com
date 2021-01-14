@@ -9,6 +9,11 @@
   <body>
     <h1>Nice. It's looking good already.</h1>
     <ul>
+    {{ range $.Site.Home.AllTranslations }}
+    <li><a href="{{ .Permalink }}">{{ .Language.LanguageName }}</a></li>
+    {{ end }}
+    </ul>
+    <ul>
       {{ range (where site.RegularPages "Section" "blog") }}
       <li>
         <a href="{{ .RelPermalink }}">

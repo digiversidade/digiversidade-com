@@ -18,5 +18,15 @@
     <article class="content">
       {{ .Content }}
     </article>
+    {{ if .IsTranslated }}
+    <h4>{{ i18n "translations" }}</h4>
+    <ul>
+        {{ range .Translations }}
+        <li>
+            <a href="{{ .Permalink }}">{{ .Title }} ({{ .Lang }})</a>
+        </li>
+        {{ end }}
+    </ul>
+    {{ end }}
   </body>
 </html>
