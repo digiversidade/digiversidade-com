@@ -14,7 +14,6 @@
     {{ if (isset .Params "subtitle") }}
       <p><em>{{ .Params.subtitle }}</em></p>
     {{ end }}
-    <p class="summary">[S]{{ .Summary | plainify }}[/S]</p>
     <p class="date">{{ .Date }}</p>
     <article class="content">
       {{ .Content }}
