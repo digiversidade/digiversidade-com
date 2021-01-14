@@ -1,6 +1,6 @@
-baseURL = "http://example.org/"
+baseURL = "https://digiversidade.netlify.app/"
 languageCode = "en-us"
-title = "My New Hugo Site"
+title = "Digiversidade"
 enableEmoji = true
 
 DefaultContentLanguage = "en"
