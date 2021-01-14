@@ -13,7 +13,8 @@ collections:
       preview: true
     fields:
       - { label: 'Title', name: 'title', widget: 'string' }
-      - { label: 'Subtitle', name: 'subtitle', widget: 'string' }
+      - { label: 'Subtitle', name: 'subtitle', widget: 'string', optional: true }
+      - { label: 'Banner', name: 'banner', widget: 'image', optional: true }
       - { label: 'Summary', name: 'summary', widget: 'markdown' }
       - { label: 'Publish Date', name: 'date', widget: 'datetime' }
       - { label: 'Body', name: 'body', widget: 'markdown' }
