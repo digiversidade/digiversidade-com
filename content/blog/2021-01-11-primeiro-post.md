@@ -1,7 +1,8 @@
 ---
 title: Primeiro post!
+subtitle: subtitle 1
 date: 2021-01-11T21:39:05.768Z
-description: Esse é um teste de post feito via Netlify
+summary: Esse é um teste de post feito via Netlify
 ---
 # The Brown Fox "Jumpy" Habits
 

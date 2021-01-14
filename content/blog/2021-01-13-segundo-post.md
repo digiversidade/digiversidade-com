@@ -1,7 +1,8 @@
 ---
 title: Segundo post!
+subtitle: subtitle 2
 date: 2021-01-13T20:35:08.544Z
-description: Esse outro teste de post
+summary: Esse outro teste de post
 ---
 # Is The Brown Fox a Rabbit?
 
