@@ -24,12 +24,10 @@
       <li><a href="{{ .Permalink }}">{{ .Language.LanguageName }}</a></li>
     {{ end }}
     </ul>
-    <pre>{{ .Page.Title | jsonify }}</pre>
   </body>
-  {{ $debug := .Page.AlternativeOutputFormats }}
-  {{ $string := (printf "console.log (%s)" ($debug | jsonify)) }}
-  {{ $targetPath := "js/vars.js" }}
+  {{ $debug := .Hugo }}
+  {{ $string := (printf "console.log ('.Hugo:%%o',{__proto__:null,%s)" (substr ($debug | jsonify) 1)) }}
+  {{ $targetPath := "debug/vars.js" }}
   {{ $vars := $string | resources.FromString $targetPath }}
-
   <script type="text/javascript" src="{{ $vars.Permalink }}"></script>
 </html>
