@@ -7,18 +7,9 @@
     <title>Document</title>
   </head>
   <body>
-    <h1>Nice. It's looking good already.</h1>
+    <h1>WELCOME TO THE PAGE!</h1>
     <ul>
-    {{ range $.Site.Home.AllTranslations }}
-    <li><a href="{{ .Permalink }}">{{ .Language.LanguageName }}</a></li>
-    {{ end }}
-    </ul>
-    <ul>
-      {{ $pages := .Site.RegularPages }}
-      {{ range .Site.Home.Translations }}
-        {{ $pages = $pages | lang.Merge .Site.RegularPages }}
-      {{ end }}
-      {{ range (where $pages "Section" "blog") }}
+      {{ range .Pages }}
       <li>
         <a href="{{ .RelPermalink }}">
           {{ .Title }}
@@ -27,5 +18,18 @@
       </li>
       {{ end }}
     </ul>
+    <hr>
+    <ul>
+    {{ range $.Site.Home.AllTranslations }}
+      <li><a href="{{ .Permalink }}">{{ .Language.LanguageName }}</a></li>
+    {{ end }}
+    </ul>
+    <pre>{{ .Page.Title | jsonify }}</pre>
   </body>
+  {{ $debug := .Page.AlternativeOutputFormats }}
+  {{ $string := (printf "console.log (%s)" ($debug | jsonify)) }}
+  {{ $targetPath := "js/vars.js" }}
+  {{ $vars := $string | resources.FromString $targetPath }}
+
+  <script type="text/javascript" src="{{ $vars.Permalink }}"></script>
 </html>
