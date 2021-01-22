@@ -1,0 +1,11 @@
+{{ $page_data := (printf "debug%s-vars.js" .Page.RelPermalink ) }}
+{{ $var_names := (slice ".Page" ".Site" ".Hugo") }}
+{{ $var_symbols := (slice .Page .Site .Hugo) }}
+{{ $js_code := "" }}
+{{ range $i, $var_name := $var_names }}
+    {{ $debug := partial "debug_dumpvar.html" (dict "label" $var_name "symbol" (index $var_symbols $i) "deep" true) }}
+    {{ $js_code = (printf "%sconsole.log ('%s:%%o',{__proto__:null,%s);\n" $js_code $var_name (substr ($debug | jsonify) 1)) }}
+{{ end }}
+{{ $js_code = replace $js_code ":{" ":{__proto__:null," }}
+{{ $vars := $js_code | resources.FromString $page_data }}
+<script type="text/javascript" src="{{ $vars.Permalink }}"></script>

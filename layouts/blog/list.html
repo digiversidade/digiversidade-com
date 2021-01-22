@@ -4,12 +4,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Document</title>
+    <title>{{ .Site.Title }}</title>
   </head>
   <body>
-    <h1>WELCOME TO THE PAGE!</h1>
+    <h1>{{ .Title }}</h1>
+    <p><em>This is a list page</em></p>
     <ul>
-      {{ range .Pages }}
+      {{ $pages := .Site.RegularPages }}
+      {{ range .Site.Home.Translations }}
+        {{ $pages = $pages | lang.Merge .Site.RegularPages }}
+      {{ end }}
+      {{ range (where $pages "Section" "blog") }}
       <li>
         <a href="{{ .RelPermalink }}">
           {{ .Title }}
@@ -18,12 +23,15 @@
       </li>
       {{ end }}
     </ul>
+    {{ if .IsTranslated }}
     <hr>
     <ul>
     {{ range $.Site.Home.AllTranslations }}
-      <li><a href="{{ .Permalink }}">{{ .Language.LanguageName }}</a></li>
+      <li><a href="{{ .Page.Permalink }}">{{ .Language.LanguageName }}</a></li>
     {{ end }}
     </ul>
+    {{ end }}
+    <hr>
   </body>
   {{ partial "debug.html" . }}
 </html>

@@ -28,5 +28,10 @@
         {{ end }}
     </ul>
     {{ end }}
+    <hr>
+    {{ range .Page.Translations }}
+        {{ . }}
+    {{ end }}
+    {{ partial "console.html" . }}
   </body>
 </html>

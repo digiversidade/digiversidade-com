@@ -1,0 +1,10 @@
+{{ partial "debug_console.html" (dict "context" .Hugo "label" ".Hugo") }}
+<pre>
+{{ printf "==PAGE==: %#v\n" .Page.RelPermalink }}
+{{ printf "%T" .Page }}
+{{ printf "%#v" .Page.Pages }}
+{{ range .Page.Pages }}
+{{ printf "%#v" "%T" . . }}
+{{ end }}
+</pre>
+<hr>

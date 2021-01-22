@@ -1,0 +1,5 @@
+{{ $debug := .context }}
+{{ $string := (printf "console.log ('%s:%%o',{__proto__:null,%s)" .label (substr ($debug | jsonify) 1)) }}
+{{ $targetPath := "debug/vars.js" }}
+{{ $vars := $string | resources.FromString $targetPath }}
+<script type="text/javascript" src="{{ $vars.Permalink }}"></script>
