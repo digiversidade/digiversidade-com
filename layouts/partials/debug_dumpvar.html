@@ -9,47 +9,71 @@
 {{ $typeIsSlice                := (findRE "^([[][]]|.*TaxonomyList|output\\.Formats|resource\\.Resources|.*navigation\\.Menu$|\\*?hugolib\\.Pages$|hugolib\\.OrderedTaxonomy$|hugolib\\.WeightedPages)" $type) }} <!-- match ^[] -->
 {{ $typeIsMap                  := (findRE "^(map[[].+[]]|.*SiteSocial|.*navigation\\.Menus$|hugolib\\.AuthorList|hugolib\\.Taxonomy|maps\\.Params)" $type) }} <!-- match ^map[*] -->
 {{ $typeIsPage                 := (findRE "^(\\*hugolib\\.Page|.*hugolib\\.pageState)" $type) }}
+
+
+<!-- We always return a dictionary -->
 {{ $value := dict }}
-{{ warnf "debug_dumpvar: Entry level=%v label=%s value=%#v" $level $label ($value | jsonify) }}
+{{ warnf "debug_dumpvar: Entry level=%v label=%s" $level $label }}
+
+<!-- Simple types -->
 {{ if (eq "bool" $type) }}
-    {{ $value = dict .label (printf "%v" .symbol) }}
+    {{ $value = dict .label .symbol }}
 {{ else if $typeIsNumber }}
     {{ $value = dict .label .symbol }}
 {{ else if $typeIsString }}
     {{ $value = (dict .label (printf "%v" .symbol | htmlUnescape)) }}
 {{ else }}
-    {{ with .symbol }}
-        {{ $var_names := slice }}
-        {{ $var_symbols := slice }}
-        {{ if $typeIsSlice }}
-            {{ $value = (dict (printf "%s[]" $label) (printf "%#v" $symbol)) }}
-        {{ else if $typeIsMap }}
-            {{ warnf "MAP: %v is map" $label }}
-            {{ range $k, $v := $symbol }}
-                {{ warnf "k=%v v=%v" $k $v }}
-                {{ $var_names = $var_names | append $k }}
-                {{ $var_symbols = $var_symbols | append $v }}
-            {{ end }}
-        {{ else if $typeIsPage }}
+
+    <!-- We synthesize types by setting custom names and symbols -->
+    {{ $var_names := slice }}
+    {{ $var_symbols := slice }}
+
+    <!-- Artificial types -->
+    {{ if eq $label ".Hugo"}}
+        {{ $hugo_version := printf "%v" hugo.Version }}
+        {{ $var_names   = (slice "hugo.Version" "hugo.IsProduction" "hugo.BuildDate" "hugo.Generator" "hugo.CommitHash" "hugo.Environment") }}
+        {{ $var_symbols = (slice $hugo_version   hugo.IsProduction   hugo.BuildDate   hugo.Generator   hugo.CommitHash   hugo.Environment ) }}
+    {{ else if $typeIsPage }}
+        {{ with .symbol }}
+            {{ warnf "with symbol"}}
             {{ $var_names   = (slice "Name" "Title" "ResourceType" "Kind" "Section" "Draft" "Type" "Layout" "Permalink" "RelPermalink" "Data") }}
             {{ $var_symbols = (slice .Name  .Title  .ResourceType  .Kind  .Section  .Draft  .Type  .Layout  .Permalink  .RelPermalink  .Data ) }}
-        {{ else if eq "page.Pages" $type }}
-            {{ range $symbol }}
-                {{ $value = merge $value (partial "debug_dumpvar.html" (dict "label" "page#Pages" "symbol" . "level" (add $level 1))) }}
-            {{ end }}
-        {{ else }}
-            {{ $value = (dict $label (dict "Unhandled type" (printf "%T" $symbol) "Value" (printf "%#v" $symbol))) }}
+        {{ end }}
+    {{ else if eq "page.Pages" $type }}
+        {{ range $symbol }}
+            {{ $value = merge $value (partial "debug_dumpvar.html" (dict "label" "page#Pages" "symbol" . "level" (add $level 1))) }}
+        {{ end }}
+    {{/* else if eq "page.Data" $type */}}
+
+
+    <!-- Slice -->
+    {{ else if $typeIsSlice }}
+        {{ $value = (dict (printf "%s[]" $label) (printf "%#v" $symbol)) }}
+
+    <!-- Map -->
+    {{ else if $typeIsMap }}
+        {{ warnf "MAP: %v is map" $label }}
+        {{ range $k, $v := $symbol }}
+            {{ warnf "k=%v v=%v" $k $v }}
+            {{ $var_names = $var_names | append $k }}
+            {{ $var_symbols = $var_symbols | append $v }}
         {{ end }}
 
-        {{ if gt (len $var_names) 0 }}
-            {{ range $i, $var_name := $var_names }}
-                {{ $var := (index $var_symbols $i) }}
-                {{ $var_type := printf "%T" $var }}
-                {{ $var_label := printf "%s (%s)" $var_name $var_type }}
-                {{ $value = merge $value (partial "debug_dumpvar.html" (dict "label" $var_label "symbol" $var "level" (add $level 1))) }}
-            {{ end }}
+    <!-- Unknown -->
+    {{ else }}
+        {{ $value = (dict $label (dict "Unhandled type" (printf "%T" $symbol) "Value" (printf "%#v" $symbol))) }}
+    {{ end }}
+
+    <!-- Check if we need to build a dictionary -->
+    {{ if gt (len $var_names) 0 }}
+        {{ range $i, $var_name := $var_names }}
+            {{ $var := (index $var_symbols $i) }}
+            {{ $var_type := printf "%T" $var }}
+            {{ $var_label := printf "%s (%s)" $var_name $var_type }}
+            {{ $value = merge $value (partial "debug_dumpvar.html" (dict "label" $var_label "symbol" $var "level" (add $level 1))) }}
         {{ end }}
     {{ end }}
+
 {{ end }}
 {{ warnf "debug_dumpvar: Return level=%v label=%s value=%#v" $level $label ($value | jsonify) }}
 {{ return $value }}
