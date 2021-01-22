@@ -1,6 +1,6 @@
 {{ $label                      := (printf "%s" .label) }}
 {{ $symbol                     := .symbol }}
-{{ $deep                       := .deep }}
+{{ $level                      := .level }}
 {{ $type                       := (printf "%T" .symbol) }}
 {{ $typeIsBool                 := (eq "bool" $type) }}
 {{ $typeIsNumber               := (or (eq "int" $type) (eq "int64" $type) (eq "float64" $type)) }}
@@ -10,16 +10,11 @@
 {{ $typeIsMap                  := (findRE "^(map[[].+[]]|.*SiteSocial|.*navigation\\.Menus$|hugolib\\.AuthorList|hugolib\\.Taxonomy|maps\\.Params)" $type) }} <!-- match ^map[*] -->
 {{ $typeIsPage                 := (findRE "^(\\*hugolib\\.Page|.*hugolib\\.pageState)" $type) }}
 {{ $value := dict }}
-{{ warnf "debug_dumpvar: deep=%v value=%#v" $deep ($value | jsonify) }}
-{{ if $deep }}
-    {{ warnf "deep is true" }}
-{{ else }}
-    {{ warnf "deep is false" }}
-{{ end }}
+{{ warnf "debug_dumpvar: Entry level=%v label=%s value=%#v" $level $label ($value | jsonify) }}
 {{ if (eq "bool" $type) }}
     {{ $value = dict .label (printf "%v" .symbol) }}
 {{ else if $typeIsNumber }}
-    {{ $value = dict .label (printf "N%#v" .symbol | htmlUnescape) }}
+    {{ $value = dict .label .symbol }}
 {{ else if $typeIsString }}
     {{ $value = (dict .label (printf "%v" .symbol | htmlUnescape)) }}
 {{ else }}
@@ -28,20 +23,19 @@
         {{ $var_symbols := slice }}
         {{ if $typeIsSlice }}
             {{ $value = (dict (printf "%s[]" $label) (printf "%#v" $symbol)) }}
-        {{ else if $typeIsPage }}
-            {{ if $deep }}
-                {{ warnf "if deep=true - deep=%v" $deep }}
-                {{ $var_names   = (slice "Name" "Title" "Translations" "ResourceType" "Kind" "Section" "Draft" "Type" "Layout" "Permalink" "RelPermalink" "Data") }}
-                {{ $var_symbols = (slice .Name  .Title  .Translations  .ResourceType  .Kind  .Section  .Draft  .Type  .Layout  .Permalink  .RelPermalink  .Data ) }}
-            {{ else }}
-                {{ warnf "if deep=false - deep=%v" $deep }}
-                {{ $var_names   = (slice "Name" "Title" "ResourceType" "Kind" "Section" "Draft" "Type" "Layout" "Permalink" "RelPermalink" "Data") }}
-                {{ $var_symbols = (slice .Name  .Title  .ResourceType  .Kind  .Section  .Draft  .Type  .Layout  .Permalink  .RelPermalink  .Data ) }}
+        {{ else if $typeIsMap }}
+            {{ warnf "MAP: %v is map" $label }}
+            {{ range $k, $v := $symbol }}
+                {{ warnf "k=%v v=%v" $k $v }}
+                {{ $var_names = $var_names | append $k }}
+                {{ $var_symbols = $var_symbols | append $v }}
             {{ end }}
+        {{ else if $typeIsPage }}
+            {{ $var_names   = (slice "Name" "Title" "ResourceType" "Kind" "Section" "Draft" "Type" "Layout" "Permalink" "RelPermalink" "Data") }}
+            {{ $var_symbols = (slice .Name  .Title  .ResourceType  .Kind  .Section  .Draft  .Type  .Layout  .Permalink  .RelPermalink  .Data ) }}
         {{ else if eq "page.Pages" $type }}
             {{ range $symbol }}
-                {{ $value = merge $value (partial "debug_dumpvar.html" (dict "label" "page#Pages" "deep" false "symbol" . )) }}
-                {{/* $value = merge $value (dict "page-Pages" (printf "%T" .) ) */}}
+                {{ $value = merge $value (partial "debug_dumpvar.html" (dict "label" "page#Pages" "symbol" . "level" (add $level 1))) }}
             {{ end }}
         {{ else }}
             {{ $value = (dict $label (dict "Unhandled type" (printf "%T" $symbol) "Value" (printf "%#v" $symbol))) }}
@@ -52,11 +46,10 @@
                 {{ $var := (index $var_symbols $i) }}
                 {{ $var_type := printf "%T" $var }}
                 {{ $var_label := printf "%s (%s)" $var_name $var_type }}
-                {{ $value = merge $value (partial "debug_dumpvar.html" (dict "label" $var_label "symbol" $var)) }}
+                {{ $value = merge $value (partial "debug_dumpvar.html" (dict "label" $var_label "symbol" $var "level" (add $level 1))) }}
             {{ end }}
         {{ end }}
     {{ end }}
 {{ end }}
-
-{{ $value = merge $value (dict (printf "%s-deep-" $label) .deep) }}
+{{ warnf "debug_dumpvar: Return level=%v label=%s value=%#v" $level $label ($value | jsonify) }}
 {{ return $value }}

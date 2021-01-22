@@ -5,6 +5,14 @@ enableEmoji = true
 
 DefaultContentLanguage = "en"
 
+[extrainfo]
+    [extrainfo.a]
+        title = "Mais dados"
+        value = 32
+    [extrainfo.b]
+        title = "Dadoooos"
+        messg = "Uma mensagem"
+
 [languages]
   [languages.en]
     title = "Digiversidade"
