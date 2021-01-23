@@ -15,7 +15,18 @@
 {{ $js_code := "" }}
 {{ range $i, $var_name := $var_names }}
     {{ $debug := partial "debug_dumpvar.html" (dict "label" $var_name "symbol" (index $var_symbols $i) "level" 0) }}
-    {{ $js_code = (printf "%sconsole.log ('%s:\\n%%o',{__proto__:null,%s);\n" $js_code $var_name (substr ($debug | jsonify) 1)) }}
+    {{ $inline := "" }}
+    {{ if isset $debug "__inline__" }}
+        {{ $inline = index $debug "__inline__" }}
+        {{ $copy := dict }}
+        {{ range $k,$v := $debug }}
+            {{ if (ne $k "__inline__") }}
+                {{ $copy = merge $copy (dict $k $v) }}
+            {{ end }}
+        {{ end }}
+        {{ $debug = $copy }}
+    {{ end }}
+    {{ $js_code = (printf "%sconsole.log ('%s: %s\\n%%o',{__proto__:null,%s);\n" $js_code $var_name $inline (substr ($debug | jsonify) 1)) }}
 {{ end }}
 
 <!-- Return the js code and force naked objects -->

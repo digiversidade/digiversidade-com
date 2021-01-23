@@ -1,19 +1,22 @@
-{{ $label                      := (printf "%s" .label) }}
-{{ $symbol                     := .symbol }}
-{{ $level                      := .level }}
-{{ $type                       := (printf "%T" .symbol) }}
-{{ $typeIsBool                 := (eq "bool" $type) }}
-{{ $typeIsNumber               := (or (eq "int" $type) (eq "int64" $type) (eq "float64" $type)) }}
-{{ $typeIsString               := (findRE "^(string|template\\.(CSS|HTML|HTMLAttr|JS|JSStr|URL))$" $type) }}
-{{ $typeIsTime                 := (eq "time.Time" $type) }}
-{{ $typeIsSlice                := (findRE "^([[][]]|.*TaxonomyList|output\\.Formats|resource\\.Resources|.*navigation\\.Menu$|\\*?hugolib\\.Pages$|hugolib\\.OrderedTaxonomy$|hugolib\\.WeightedPages)" $type) }} <!-- match ^[] -->
-{{ $typeIsMap                  := (findRE "^(map[[].+[]]|.*SiteSocial|.*navigation\\.Menus$|hugolib\\.AuthorList|hugolib\\.Taxonomy|maps\\.Params)" $type) }} <!-- match ^map[*] -->
-{{ $typeIsPage                 := (findRE "^(\\*hugolib\\.Page|.*hugolib\\.pageState)" $type) }}
 
+<!-- Initialize vars and preprocess some conditionals -->
+{{ $label        := (printf "%s" .label) }}
+{{ $symbol       := .symbol }}
+{{ $level        := .level }}
+{{ $type         := (printf "%T" .symbol) }}
+{{ $typeIsBool   := (eq "bool" $type) }}
+{{ $typeIsNumber := (or (eq "int" $type) (eq "int64" $type) (eq "float64" $type)) }}
+{{ $typeIsString := (findRE "^(string|template\\.(CSS|HTML|HTMLAttr|JS|JSStr|URL))$" $type) }}
+{{ $typeIsTime   := (eq "time.Time" $type) }}
+{{ $typeIsSlice  := (findRE "^([[][]]|.*TaxonomyList|output\\.Formats|resource\\.Resources|.*navigation\\.Menu$|\\*?hugolib\\.Pages$|hugolib\\.OrderedTaxonomy$|hugolib\\.WeightedPages)" $type) }} <!-- match ^[] -->
+{{ $typeIsMap    := (findRE "^(map[[].+[]]|.*SiteSocial|.*navigation\\.Menus$|hugolib\\.AuthorList|hugolib\\.Taxonomy|maps\\.Params)" $type) }} <!-- match ^map[*] -->
+{{ $typeIsPage   := (findRE "^(\\*hugolib\\.Page|.*hugolib\\.pageState)" $type) }}
+<!-- TODO: reflect.IsMap, reflect.typeIsSlice etc -->
+
+{{ warnf "debug_dumpvar: Entry level=%v label=%s" $level $label }}
 
 <!-- We always return a dictionary -->
 {{ $value := dict }}
-{{ warnf "debug_dumpvar: Entry level=%v label=%s" $level $label }}
 
 <!-- Simple types -->
 {{ if (eq "bool" $type) }}
@@ -43,8 +46,6 @@
         {{ range $symbol }}
             {{ $value = merge $value (partial "debug_dumpvar.html" (dict "label" "page#Pages" "symbol" . "level" (add $level 1))) }}
         {{ end }}
-    {{/* else if eq "page.Data" $type */}}
-
 
     <!-- Slice -->
     {{ else if $typeIsSlice }}
@@ -72,8 +73,11 @@
             {{ $var_label := printf "%s (%s)" $var_name $var_type }}
             {{ $value = merge $value (partial "debug_dumpvar.html" (dict "label" $var_label "symbol" $var "level" (add $level 1))) }}
         {{ end }}
+        <!-- Test inline message insertion -->
+        {{ $value = merge $value (dict "__inline__" "The quick brown fox jumped over the lazy dogs!") }}
     {{ end }}
 
 {{ end }}
+
 {{ warnf "debug_dumpvar: Return level=%v label=%s value=%#v" $level $label ($value | jsonify) }}
 {{ return $value }}
