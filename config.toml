@@ -2,6 +2,7 @@ baseURL = "https://digiversidade.netlify.app/"
 languageCode = "en-us"
 title = "Digiversidade"
 enableEmoji = true
+theme = [ "hugo-debugconsole" ]
 
 DefaultContentLanguage = "en"
 
@@ -22,3 +23,4 @@ DefaultContentLanguage = "en"
     title = "Digiversidade"
     languageName = "Português"
     weight = 2
+
