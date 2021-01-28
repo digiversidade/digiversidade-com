@@ -1,0 +1,4 @@
+[submodule "themes/hugo-debugconsole"]
+	path = themes/hugo-debugconsole
+	url = https://github.com/marcond/hugo-debugconsole.git
+	branch = main
