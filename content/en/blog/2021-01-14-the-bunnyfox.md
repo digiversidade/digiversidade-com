@@ -1,6 +1,7 @@
 ---
 title: The Bunnyfox
 subtitle: When the fox is a jumping bunny.
+slug: bunnyfox
 banner: /img/header_1380x140_blue_logo.jpeg
 date: 2021-01-14T13:02:26.829Z
 ---
