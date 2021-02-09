@@ -18,12 +18,16 @@
       </li>
       {{ end }}
     </ul>
+    {{ if .IsTranslated }}
     <hr>
     <ul>
-    {{ range $.Site.Home.AllTranslations }}
-      <li><a href="{{ .Permalink }}">{{ .Language.LanguageName }}</a></li>
-    {{ end }}
+        {{ range .Translations }}
+        <li>
+            <a href="{{ .Permalink }}">{{ .Title }} ({{ .Lang }})</a>
+        </li>
+        {{ end }}
     </ul>
+    {{ end }}
   </body>
   {{ partial "debug.html" . }}
 </html>

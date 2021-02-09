@@ -4,25 +4,17 @@ title = "Digiversidade"
 enableEmoji = true
 theme = [ "hugo-debugconsole" ]
 
-DefaultContentLanguage = "en"
+DefaultContentLanguage = "pt"
 defaultContentLanguageInSubdir = "false"
 
-[extrainfo]
-    [extrainfo.a]
-        title = "Mais dados"
-        value = 32
-    [extrainfo.b]
-        title = "Dadoooos"
-        messg = "Uma mensagem"
-
 [languages]
-  [languages.en]
-    title = "Digiversidade"
-    languageName = "English"
-    weight = 1
-    contentDir = "content/en"
-  [languages.pt]
-    title = "Digiversidade"
-    languageName = "Português"
-    weight = 2
-    contentDir = "content/pt"
+    [languages.pt]
+        title = "Digiversidade"
+        languageName = "Português"
+        weight = 1
+        contentDir = "content/pt"
+    [languages.en]
+        title = "Digiversidade"
+        languageName = "English"
+        weight = 2
+        contentDir = "content/en"
