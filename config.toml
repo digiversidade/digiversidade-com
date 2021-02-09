@@ -5,6 +5,7 @@ enableEmoji = true
 theme = [ "hugo-debugconsole" ]
 
 DefaultContentLanguage = "en"
+defaultContentLanguageInSubdir = "false"
 
 [extrainfo]
     [extrainfo.a]
@@ -19,8 +20,9 @@ DefaultContentLanguage = "en"
     title = "Digiversidade"
     languageName = "English"
     weight = 1
+    contentDir = "content/en"
   [languages.pt]
     title = "Digiversidade"
     languageName = "Português"
     weight = 2
-
+    contentDir = "content/pt"

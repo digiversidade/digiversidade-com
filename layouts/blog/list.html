@@ -8,13 +8,9 @@
   </head>
   <body>
     <h1>{{ .Title }}</h1>
-    <p><em>This is a list page</em></p>
+    <p><em>The articles:</em></p>
     <ul>
-      {{ $pages := .Site.RegularPages }}
-      {{ range .Site.Home.Translations }}
-        {{ $pages = $pages | lang.Merge .Site.RegularPages }}
-      {{ end }}
-      {{ range (where $pages "Section" "blog") }}
+      {{ range (where .Site.RegularPages "Section" "blog") }}
       <li>
         <a href="{{ .RelPermalink }}">
           {{ .Title }}
