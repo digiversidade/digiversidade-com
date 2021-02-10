@@ -2,3 +2,7 @@
 	path = themes/hugo-debugconsole
 	url = https://github.com/marcond/hugo-debugconsole.git
 	branch = main
+[submodule "themes/bigspring-hugo-startup-theme"]
+	path = themes/bigspring-hugo-startup-theme
+	url = https://github.com/themefisher/bigspring-hugo-startup-theme.git
+	branch = master
