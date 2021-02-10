@@ -1,5 +1,5 @@
 ######################## default configuration ####################
-baseURL = "https://digiversidade.netlify.app/"
+baseURL = "https://digiversidade.com/"
 title = "Digiversidade"
 theme = [ "hugo-debugconsole" ]
 languageName = "En"
