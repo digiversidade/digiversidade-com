@@ -5,7 +5,7 @@ theme = [ "hugo-debugconsole" ]
 languageName = "En"
 languageCode = "en-us"
 # post pagination
-paginate = "4"
+paginate = "5"
 # post excerpt
 summaryLength = "15"
 # disqus short name
