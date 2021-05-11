@@ -1,6 +1,7 @@
+---
 ####################### Banner #########################
 banner:
-  title : "Let us solve your critical website <br> development challenges"
+  title : "Lassen Sie uns Ihre kritischen Herausforderungen bei der Website <br> Entwicklung lösen"
   image : "images/banner-art.svg"
   content : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam nihil enim maxime corporis cumque <br> totam aliquid nam sint inventore optio modi neque laborum officiis necessitatibus"
   button:
@@ -15,32 +16,32 @@ feature:
   feature_item:
     # feature item loop
     - name : "Clean Code"
-      icon : "ti-pulse"
+      icon : "fas fa-code"
       content : "Lorem ipsum dolor sit amet consectetur adipisicing elit quam nihil"
       
     # feature item loop
     - name : "Object Oriented"
-      icon : "ti-package"
+      icon : "fas fa-object-group"
       content : "Lorem ipsum dolor sit amet consectetur adipisicing elit quam nihil"
       
     # feature item loop
     - name : "24h Service"
-      icon : "ti-alarm-clock"
+      icon : "fas fa-user-clock"
       content : "Lorem ipsum dolor sit amet consectetur adipisicing elit quam nihil"
       
     # feature item loop
     - name : "Value For Money"
-      icon : "ti-credit-card"
+      icon : "fas fa-heart"
       content : "Lorem ipsum dolor sit amet consectetur adipisicing elit quam nihil"
       
     # feature item loop
     - name : "Faster Response"
-      icon : "ti-headphone-alt"
+      icon : "fas fa-tachometer-alt"
       content : "Lorem ipsum dolor sit amet consectetur adipisicing elit quam nihil"
       
     # feature item loop
     - name : "Cloud Support"
-      icon : "ti-cloud-up"
+      icon : "fas fa-cloud"
       content : "Lorem ipsum dolor sit amet consectetur adipisicing elit quam nihil"
       
 
@@ -109,3 +110,4 @@ call_to_action:
     enable : true
     label : "Contact Us"
     link : "contact"
+---
