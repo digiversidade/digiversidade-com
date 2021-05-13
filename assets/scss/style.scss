@@ -16,6 +16,8 @@ $icon-font: '{{.icon_font | default "Font Awesome 5 Free"}}';
 
 @import 'mixins';
 
+@import 'fonts';
+
 @import 'typography';
 
 @import 'buttons';
